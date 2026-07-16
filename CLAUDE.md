@@ -14,7 +14,7 @@ The goal is a near-exact visual replica of the current Squarespace site (templat
 - [ ] Wire mailing list form (currently a placeholder alert) — likely Mailchimp embedded form
 - [ ] Wire contact form (currently a placeholder alert) — Formspree free tier or similar
 - [ ] Decide fate of old news posts (2018–2019): rebuild as static pages or drop; links currently point to old tumbledownhouse.com URLs which will die
-- [ ] Deploy: GitHub Pages or Cloudflare Pages from this repo
+- [x] Deploy: GitHub Pages — live at https://tylercdmx.github.io/tumbledownhouse/ (repo: https://github.com/tylercdmx/tumbledownhouse, public, Pages from main branch root). Done July 16, 2026. GitHub CLI is installed and authenticated as tylercdmx on this machine.
 - [ ] Transfer domain away from Squarespace (Cloudflare Registrar or Porkbun, ~$11–12/yr) and point DNS at the new host
 - [ ] Only after everything above is verified live: cancel Squarespace
 

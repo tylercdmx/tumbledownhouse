@@ -10,13 +10,15 @@ The goal is a near-exact visual replica of the current Squarespace site (templat
 
 - [x] First-pass single-file `index.html` (all sections, working audio player, video embeds, gallery slideshow)
 - [x] Download all assets from Squarespace CDN before the subscription is cancelled (see Asset Manifest below) and switch `index.html` to local paths — done July 16, 2026. All 20 images (`assets/img/`, true JPEGs at max 2500w — the CDN serves WebP unless you send `Accept: image/jpeg`) and all 9 MP3s (`assets/audio/`, 256kbps) downloaded and verified (decode + duration checks in a local browser). `index.html` is the canonical file with local paths; `tumbledownhouse-rebuild_1.html` is the pre-localization original, safe to delete once Tyler confirms.
-- [ ] Side-by-side visual comparison against live site; tighten spacing/header/hero crop
-- [ ] Wire mailing list form (currently a placeholder alert) — likely Mailchimp embedded form
-- [ ] Wire contact form (currently a placeholder alert) — Formspree free tier or similar
-- [ ] Decide fate of old news posts (2018–2019): rebuild as static pages or drop; links currently point to old tumbledownhouse.com URLs which will die
-- [x] Deploy: GitHub Pages — live at https://tylercdmx.github.io/tumbledownhouse/ (repo: https://github.com/tylercdmx/tumbledownhouse, public, Pages from main branch root). Done July 16, 2026. GitHub CLI is installed and authenticated as tylercdmx on this machine.
-- [ ] Transfer domain away from Squarespace (Cloudflare Registrar or Porkbun, ~$11–12/yr) and point DNS at the new host
-- [ ] Only after everything above is verified live: cancel Squarespace
+- [x] Deploy: GitHub Pages from `main` branch root (repo: https://github.com/tylercdmx/tumbledownhouse, public). GitHub CLI is installed and authenticated as tylercdmx on this machine. Pushing to `main` redeploys in about a minute.
+- [x] **LIVE at https://tumbledownhouse.com** — done October 12, 2026. The Squarespace site subscription had already expired, so there was no old site left to compare against or keep running. DNS was repointed at GitHub Pages in Squarespace's DNS settings (domain is still registered there): four `A` records on `@` (185.199.108–111.153) and `www` CNAME → `tylercdmx.github.io`. Custom domain set in Pages (`CNAME` file in repo), HTTPS enforced. Existing Google Workspace `MX`, GoDaddy mail CNAMEs, Mailchimp DKIM and other `TXT` records were left untouched — don't delete them, they keep `info@tumbledownhouse.com` working.
+- [x] Mailing list and contact forms removed for launch (Tyler: not a priority, band isn't very active). The Contact section is just a booking email. Formspree wiring with placeholder form IDs is parked on the `forms-wip` branch. Tyler's Mailchimp account (see the `k1._domainkey` DNS record) may still hold the old list; if a signup is wanted later, use its embedded form.
+- [x] News links to the dead Squarespace post pages were removed; the six items stay as headline + date + thumbnail only. Original post text is not recovered (a Wayback Machine check was inconclusive). Rebuild as static pages only if Tyler supplies the text.
+- [ ] Fix the SPF `TXT` record on `@` (Tyler to edit in Squarespace DNS). Current value is broken (`?all` mid-record, Google not authorized). Replace with `v=spf1 include:_spf.google.com include:servers.mcsv.net include:secureserver.net ~all`, then verify a test email shows `SPF: PASS`.
+- [ ] Confirm the HTTPS padlock shows on tumbledownhouse.com (it was not confirmed from a phone on launch day; likely cached or DNS propagation).
+- [ ] Domain transfer is optional now, not a blocker. The domain is paid through Oct 20, 2027. If wanted, move it to Cloudflare Registrar or Porkbun (~$11–12/yr) before then, and keep the DNS records above intact.
+- [ ] Side-by-side visual check against the original design (use archive.org or old screenshots, since the live original is gone); tighten spacing/header/hero crop
+- [ ] Cancel/cleanup at Squarespace: nothing left to cancel for the site (already expired); just make sure the domain itself stays renewed.
 
 ## Decisions made
 
@@ -70,7 +72,7 @@ All nine track MP3 URLs are in `index.html` in the `#tracklist` list (`data-src`
 - Tour: ReverbNation widget, artist_458069 (iframe already in `index.html`). Alternative if it dies: Bandsintown free widget.
 - Bandcamp: https://tumbledownhouse.bandcamp.com/
 - Spotify artist: `7Cr5P87IxJxAdoGiPnH8UG`
-- Booking contact: Barbara Collin, 323-556-1046, collinartists@gmail.com; Bay Area booking via info@tumbledownhouse.com
+- Booking contact: the site shows only info@tumbledownhouse.com (written "info at tumbledown house dot com" to dodge spam scrapers). Tyler removed Barbara Collin's agency contact (323-556-1046, collinartists@gmail.com) from the Contact section on Oct 12, 2026.
 
 ## Deployment plan
 
@@ -78,10 +80,11 @@ All nine track MP3 URLs are in `index.html` in the `#tracklist` list (`data-src`
 2. GitHub Pages (Settings → Pages → deploy from main) or Cloudflare Pages connected to the repo
 3. Custom domain `tumbledownhouse.com` + `www`, HTTPS enforced
 4. Domain transfer: unlock at Squarespace, get auth code, transfer to Cloudflare Registrar or Porkbun; expect up to a week; do this before cancelling the Squarespace site but note domain and site are separate cancellations
-5. Keep Squarespace live until the new site is verified at the real domain
+5. (Done differently than planned: the Squarespace site had already expired, so the site went straight to the real domain on Oct 12, 2026.)
 
 ## Working preferences
 
 - Tyler prefers natural, human-sounding copy; avoid AI-sounding language in any site text or drafts
 - Keep changes cheap and simple; the whole point of this migration is cost and independence
-- Verify against the live site (while it's still up) rather than guessing at design details
+- The original Squarespace site is gone, so the current `index.html` and the design tokens above are the source of truth for design details
+- DNS lookups from this machine can return stale answers (curl hit Squarespace's old IP after the cutover); check from a phone on cellular or force the GitHub IP with `curl --resolve`
